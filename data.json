@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "TestCompany1",
+    "OrganizationNumber": "423-33",
+    "Employees": 9
+  },
+  {
+    "Name": "CompanyTest2",
+    "OrganizationNumber": "134-97",
+    "Employees": 4
+  },
+  {
+    "Name": "TestTest3",
+    "OrganizationNumber": "932-55",
+    "Employees": 19
+  }
+]

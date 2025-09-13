@@ -8,6 +8,9 @@ namespace HusqvarnaTest.Services
 {
     interface IMonitorFileService
     {
+        public void CancelMonitoring();
+        public void Dispose();
+
         event EventHandler? FileChanged;
     }
 }

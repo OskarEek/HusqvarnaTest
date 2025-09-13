@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using HusqvarnaTest.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,5 +20,21 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void ForceRefreshDataButton(object sender, RoutedEventArgs e)
+    {
+        // Trigger ViewModel method
+        (DataContext as MainViewModel)?.ForceRefreshDataButton();
+    }
+
+    private void CancelMonitoringButton(object sender, RoutedEventArgs e)
+    {
+        (DataContext as MainViewModel)?.CancelMonitoringButton();
+    }
+
+    private void QuitButton(object sender, RoutedEventArgs e)
+    {
+        (DataContext as MainViewModel)?.QuitButton();
     }
 }

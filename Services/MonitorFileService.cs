@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HusqvarnaTest.Services
 {
-    class MonitorFileService : IMonitorFileService
+    class MonitorFileService : IMonitorFileService, IDisposable
     {
         private readonly string _monitoredFilePath;
         private readonly IFileService _fileService;
@@ -20,32 +20,21 @@ namespace HusqvarnaTest.Services
         {
             _monitoredFilePath = filePath;
             _fileService = fileService;
-            
-
             _lastFileWrite = _fileService.GetLastWriteTime(_monitoredFilePath);
             _ = TimerLoop();
         }
 
-        public event EventHandler? FileChanged;
-
         private async Task TimerLoop()
         {
-            try
+            while (await _periodicTimer.WaitForNextTickAsync(_cancellationTokenSource.Token))
             {
-                while (await _periodicTimer.WaitForNextTickAsync(_cancellationTokenSource.Token))
+
+                DateTime writeTime = _fileService.GetLastWriteTime(_monitoredFilePath);
+
+                if (writeTime != _lastFileWrite)
                 {
-
-                    DateTime writeTime = _fileService.GetLastWriteTime(_monitoredFilePath);
-
-                    if (writeTime != _lastFileWrite)
-                    {
-                        UpdateLastFileWrite(writeTime);
-                    }
+                    UpdateLastFileWrite(writeTime);
                 }
-            }
-            catch
-            {
-
             }
         }
 
@@ -54,5 +43,19 @@ namespace HusqvarnaTest.Services
             _lastFileWrite = writeTime;
             FileChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        public void CancelMonitoring()
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource.Cancel();
+            _periodicTimer.Dispose();
+            _cancellationTokenSource.Dispose();
+        }
+
+        public event EventHandler? FileChanged;
     }
 }

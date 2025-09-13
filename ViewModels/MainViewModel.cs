@@ -7,10 +7,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace HusqvarnaTest.ViewModels
 {
-    class MainViewModel : INotifyPropertyChanged
+    class MainViewModel
     {
         private static readonly string _filePath = "data.json";
         private readonly IMonitorFileService _fileMonitorService;
@@ -27,6 +29,8 @@ namespace HusqvarnaTest.ViewModels
                 UpdateFileData();
             };
         }
+
+
         private void UpdateFileData()
         {
             Companies.Clear();
@@ -36,12 +40,19 @@ namespace HusqvarnaTest.ViewModels
                 Companies.Add(company);
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void onPropertyChanged(string propertyName)
+        public void ForceRefreshDataButton()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            UpdateFileData();
         }
-    }
 
+        public void CancelMonitoringButton()
+        {
+            _fileMonitorService.CancelMonitoring();
+        }
+        public void QuitButton()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
 }

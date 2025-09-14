@@ -7,6 +7,7 @@ namespace Tests
         private static string _filePath = "test.json";
 
         [Fact]
+        //TODO: Sometimes (for some reason) the test takes a little longer to run the first time I run it, if I run it a second time (and all times after that) its much faster and Im not sure why that is or how to solve it
         public void MonitorFileServiceTest()
         {
             //Create new empty test file

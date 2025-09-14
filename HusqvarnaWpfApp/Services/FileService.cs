@@ -21,8 +21,15 @@ namespace HusqvarnaTest.Services
         {
             using (var r = new StreamReader(filePath))
             {
-                string json = r.ReadToEnd();
-                return JsonSerializer.Deserialize<T>(json);
+                try
+                {
+                    string json = r.ReadToEnd();
+                    return JsonSerializer.Deserialize<T>(json);
+                }
+                catch (JsonException e)
+                {
+                    return default;
+                }
             }
         }
     }

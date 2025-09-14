@@ -32,7 +32,6 @@ namespace HusqvarnaTest.ViewModels
             };
         }
 
-
         private void RefreshFileData()
         {
             Companies.Clear();
@@ -51,10 +50,5 @@ namespace HusqvarnaTest.ViewModels
         {
             _monitorFileService.CancelMonitoring();
         }
-        public void QuitButton()
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

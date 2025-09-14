@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HusqvarnaCode", "HusqvarnaWpfApp\HusqvarnaCode.csproj", "{7601D4C4-CB08-C507-3184-3150354ED065}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "HusqvarnaWpfApp.Tests\Tests.csproj", "{0080929B-1C6D-6D9C-4531-D0C45B40F3D3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7601D4C4-CB08-C507-3184-3150354ED065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7601D4C4-CB08-C507-3184-3150354ED065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7601D4C4-CB08-C507-3184-3150354ED065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7601D4C4-CB08-C507-3184-3150354ED065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0080929B-1C6D-6D9C-4531-D0C45B40F3D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0080929B-1C6D-6D9C-4531-D0C45B40F3D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0080929B-1C6D-6D9C-4531-D0C45B40F3D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0080929B-1C6D-6D9C-4531-D0C45B40F3D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F2A4224-DA29-4409-A205-4E0E6A930FC4}
+	EndGlobalSection
+EndGlobal

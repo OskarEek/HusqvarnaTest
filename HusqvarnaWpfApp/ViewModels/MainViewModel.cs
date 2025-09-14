@@ -14,15 +14,17 @@ namespace HusqvarnaTest.ViewModels
 {
     class MainViewModel
     {
-        private static readonly string _filePath = "data.json";
+        private readonly string _filePath;
         private readonly IMonitorFileService _monitorFileService;
         private readonly IFileService _fileService;
         public ObservableCollection<CompanyModel> Companies { get; } = new();
 
-        public MainViewModel()
+        public MainViewModel(string filePath, IMonitorFileService monitorFileService, IFileService fileService)
         {
-            _fileService = new FileService();
-            _monitorFileService = new MonitorFileService(_filePath);
+            _filePath = filePath;
+            _monitorFileService = monitorFileService;
+            _fileService = fileService;
+
             RefreshFileData();
             _monitorFileService.FileChanged += (s, e) =>
             {

@@ -32,9 +32,4 @@ public partial class MainWindow : Window
     {
         (DataContext as MainViewModel)?.CancelMonitoringButton();
     }
-
-    private void QuitButton(object sender, RoutedEventArgs e)
-    {
-        (DataContext as MainViewModel)?.QuitButton();
-    }
 }

@@ -10,10 +10,11 @@ namespace HusqvarnaTest.Services
 {
     public class MonitorFileService : IMonitorFileService, IDisposable
     {
-        private static readonly int _periodicTimerSeconds = 2;
         private readonly string _monitoredFilePath;
         private readonly PeriodicTimer _periodicTimer;
         private readonly CancellationTokenSource _cancellationTokenSource;
+
+        private static readonly int _periodicTimerSeconds = 2;
         private DateTime _lastFileWrite;
 
         public MonitorFileService(string filePath)

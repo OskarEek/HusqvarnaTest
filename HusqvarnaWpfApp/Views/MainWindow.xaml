@@ -15,7 +15,6 @@
         <StackPanel Grid.Column="0" Margin="10" VerticalAlignment="Top">
             <Button Content="Force reload data" Width="100" Margin="0,0,0,5" Click="ForceRefreshDataButton"/>
             <Button Content="Cancel monitoring" Width="100" Margin="0,0,0,5" Click="CancelMonitoringButton"/>
-            <Button Content="Quit" Width="100" Click="QuitButton"/>
         </StackPanel>
         
         <ListBox Grid.Column="1"  ItemsSource="{Binding Companies}">

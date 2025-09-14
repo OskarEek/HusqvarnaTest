@@ -22,7 +22,7 @@ namespace HusqvarnaTest.ViewModels
         public MainViewModel()
         {
             _fileService = new FileService();
-            _monitorFileService = new MonitorFileService(_filePath, _fileService);
+            _monitorFileService = new MonitorFileService(_filePath);
             RefreshFileData();
             _monitorFileService.FileChanged += (s, e) =>
             {

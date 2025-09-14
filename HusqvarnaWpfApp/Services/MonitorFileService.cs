@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,19 +10,21 @@ namespace HusqvarnaTest.Services
 {
     public class MonitorFileService : IMonitorFileService, IDisposable
     {
-        private readonly string _monitoredFilePath;
-        private readonly IFileService _fileService;
-
         private static readonly int _periodicTimerSeconds = 2;
-        private readonly PeriodicTimer _periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(_periodicTimerSeconds));
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly string _monitoredFilePath;
+        private readonly PeriodicTimer _periodicTimer;
+        private readonly CancellationTokenSource _cancellationTokenSource;
         private DateTime _lastFileWrite;
 
-        public MonitorFileService(string filePath, IFileService fileService)
+        public MonitorFileService(string filePath)
         {
             _monitoredFilePath = filePath;
-            _fileService = fileService;
-            _lastFileWrite = _fileService.GetLastWriteTime(_monitoredFilePath);
+            _periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(_periodicTimerSeconds));
+            _cancellationTokenSource = new();
+
+            //TODO: if there was multiple places in the codebase that was going to use GetLastWriteTime or that I knew that I will have to do alot more file-operations,
+            //I would probobly have GetLastWriteTime as its own method in the FileService class instead to keep file operations centralized, but to keep it simpler in this specific program i decided not to.
+            _lastFileWrite = File.GetLastWriteTimeUtc(_monitoredFilePath);
             _ = TimerLoop();
         }
 
@@ -39,7 +42,7 @@ namespace HusqvarnaTest.Services
 
         internal (bool, DateTime) FileHasChanged()
         {
-            DateTime writeTime = _fileService.GetLastWriteTime(_monitoredFilePath);
+            DateTime writeTime = File.GetLastWriteTimeUtc(_monitoredFilePath);
             return (writeTime != _lastFileWrite, writeTime);
         }
 

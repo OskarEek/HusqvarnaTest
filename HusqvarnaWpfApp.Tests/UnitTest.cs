@@ -16,8 +16,7 @@ namespace Tests
             }
             File.WriteAllText(_filePath, string.Empty);
 
-            var fileService = new FileService();
-            var monitorFileService = new MonitorFileService(_filePath, fileService);
+            var monitorFileService = new MonitorFileService(_filePath);
 
             //File has not changed
             (bool fileHasChanged, DateTime writeTime) = monitorFileService.FileHasChanged();

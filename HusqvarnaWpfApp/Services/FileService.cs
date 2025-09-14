@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HusqvarnaTest.Services
 {
-    class FileService : IFileService
+    public class FileService : IFileService
     {
 
         public DateTime GetLastWriteTime(string filePath)

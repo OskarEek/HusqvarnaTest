@@ -15,23 +15,23 @@ namespace HusqvarnaTest.ViewModels
     class MainViewModel
     {
         private static readonly string _filePath = "data.json";
-        private readonly IMonitorFileService _fileMonitorService;
+        private readonly IMonitorFileService _monitorFileService;
         private readonly IFileService _fileService;
         public ObservableCollection<CompanyModel> Companies { get; } = new();
 
         public MainViewModel()
         {
             _fileService = new FileService();
-            _fileMonitorService = new MonitorFileService(_filePath, _fileService);
-            UpdateFileData();
-            _fileMonitorService.FileChanged += (s, e) =>
+            _monitorFileService = new MonitorFileService(_filePath, _fileService);
+            RefreshFileData();
+            _monitorFileService.FileChanged += (s, e) =>
             {
-                UpdateFileData();
+                RefreshFileData();
             };
         }
 
 
-        private void UpdateFileData()
+        private void RefreshFileData()
         {
             Companies.Clear();
             var result = _fileService.GetFileData<List<CompanyModel>>(_filePath) ?? new();
@@ -42,12 +42,12 @@ namespace HusqvarnaTest.ViewModels
         }
         public void ForceRefreshDataButton()
         {
-            UpdateFileData();
+            RefreshFileData();
         }
 
         public void CancelMonitoringButton()
         {
-            _fileMonitorService.CancelMonitoring();
+            _monitorFileService.CancelMonitoring();
         }
         public void QuitButton()
         {

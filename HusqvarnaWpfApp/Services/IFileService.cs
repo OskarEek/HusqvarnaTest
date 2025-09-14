@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HusqvarnaTest.Services
 {
-    interface IFileService
+    public interface IFileService
     {
         public DateTime GetLastWriteTime(string filePath);
 

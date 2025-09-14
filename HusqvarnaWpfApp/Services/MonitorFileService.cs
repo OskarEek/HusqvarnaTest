@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HusqvarnaTest.Services
 {
-    class MonitorFileService : IMonitorFileService, IDisposable
+    public class MonitorFileService : IMonitorFileService, IDisposable
     {
         private readonly string _monitoredFilePath;
         private readonly IFileService _fileService;
@@ -28,14 +29,18 @@ namespace HusqvarnaTest.Services
         {
             while (await _periodicTimer.WaitForNextTickAsync(_cancellationTokenSource.Token))
             {
-
-                DateTime writeTime = _fileService.GetLastWriteTime(_monitoredFilePath);
-
-                if (writeTime != _lastFileWrite)
+                (bool fileHasChange, DateTime writeTime) = FileHasChanged();
+                if (fileHasChange)
                 {
                     UpdateLastFileWrite(writeTime);
                 }
             }
+        }
+
+        internal (bool, DateTime) FileHasChanged()
+        {
+            DateTime writeTime = _fileService.GetLastWriteTime(_monitoredFilePath);
+            return (writeTime != _lastFileWrite, writeTime);
         }
 
         private void UpdateLastFileWrite(DateTime writeTime)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HusqvarnaTest.Services
 {
-    interface IMonitorFileService
+    public interface IMonitorFileService
     {
         public void CancelMonitoring();
         public void Dispose();

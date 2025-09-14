@@ -33,6 +33,8 @@ namespace HusqvarnaTest.ViewModels
                 Companies.Add(company);
             }
         }
+
+        //TODO: There are better ways to handle button clicks but becuase of some knowledge gaps when it comes to WPF and not enough time to research it, I decided solved this in a suboptimal way
         public void ForceRefreshDataButton()
         {
             RefreshFileData();

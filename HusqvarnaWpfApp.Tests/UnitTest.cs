@@ -20,25 +20,21 @@ namespace Tests
             await File.WriteAllTextAsync(_filePath, string.Empty);
 
             var monitorFileService = new MonitorFileService(_filePath, TimeSpan.FromMilliseconds(1));
-
             var monitoredChange = false;
             monitorFileService.FileChanged += (s, e) =>
             {
                 monitoredChange = true;
             };
 
-            //Expect no monitored change
             await Task.Delay(2);
             Assert.False(monitoredChange);
 
             await File.WriteAllTextAsync(_filePath, "null");
 
-            //Expect monitored change
             await Task.Delay(2);
             Assert.True(monitoredChange);
 
             monitorFileService.Dispose();
-
             File.Delete(_filePath);
         }
     }

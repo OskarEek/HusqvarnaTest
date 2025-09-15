@@ -4,6 +4,7 @@ namespace HusqvarnaTest.Services
 {
     public class MonitorFileService : IMonitorFileService, IDisposable
     {
+        private static readonly TimeSpan s_defaultInterval = TimeSpan.FromSeconds(2);
         private readonly string _monitoredFilePath;
         private readonly PeriodicTimer _periodicTimer;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -14,10 +15,9 @@ namespace HusqvarnaTest.Services
         public MonitorFileService(string filePath, TimeSpan? monitorInteval = null)
         {
             _monitoredFilePath = filePath;
-            _cancellationTokenSource = new CancellationTokenSource();
-            var inteval = monitorInteval ?? TimeSpan.FromSeconds(2);
+            TimeSpan inteval = monitorInteval ?? s_defaultInterval;
             _periodicTimer = new PeriodicTimer(inteval);
-
+            _cancellationTokenSource = new CancellationTokenSource();
             //TODO: if there was multiple places in the codebase that was going to use GetLastWriteTime or that I knew that I will have to do alot of other file-operations in other parts of the program in the future,
             //I would probobly have GetLastWriteTime as its own method in the FileService class instead to keep file operations centralized, but to keep it simpler in this specific program i decided not to.
             _lastFileWrite = File.GetLastWriteTimeUtc(_monitoredFilePath);
@@ -29,18 +29,20 @@ namespace HusqvarnaTest.Services
             _cancellationTokenSource.Cancel();
         }
 
+        //Periodic loop that detects file changes
         private async Task TimerLoop()
         {
             while (await _periodicTimer.WaitForNextTickAsync(_cancellationTokenSource.Token))
             {
-                (bool fileHasChange, DateTime writeTime) = FileHasChanged();
-                if (fileHasChange)
+                (bool fileHasChanged, DateTime writeTime) = FileHasChanged();
+                if (fileHasChanged)
                 {
-                    UpdateLastFileWrite(writeTime);
+                    OnFileChanged(writeTime);
                 }
             }
         }
 
+        //Checks if file has changed since last write time
         private (bool, DateTime) FileHasChanged()
         {
             //TODO: Reading the file content every loop and comparing it to a old copy of it stored in memory would be the optimal way to check if the file data has changed or not.
@@ -52,7 +54,8 @@ namespace HusqvarnaTest.Services
             return (writeTime != _lastFileWrite, writeTime);
         }
 
-        private void UpdateLastFileWrite(DateTime writeTime)
+        //Stores last file write and triggers the file changed event
+        private void OnFileChanged(DateTime writeTime)
         {
             _lastFileWrite = writeTime;
             FileChanged?.Invoke(this, EventArgs.Empty);

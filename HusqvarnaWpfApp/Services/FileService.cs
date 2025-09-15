@@ -5,7 +5,7 @@ namespace HusqvarnaTest.Services
 {
     public class FileService : IFileService
     {
-        public T? GetFileData<T>(string filePath)
+        public T? GetJsonFileData<T>(string filePath)
         {
             using (var r = new StreamReader(filePath))
             {

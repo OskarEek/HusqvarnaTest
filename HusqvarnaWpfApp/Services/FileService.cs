@@ -5,12 +5,6 @@ namespace HusqvarnaTest.Services
 {
     public class FileService : IFileService
     {
-
-        public DateTime GetLastWriteTime(string filePath)
-        {
-            return File.GetLastWriteTime(filePath);
-        }
-
         public T? GetFileData<T>(string filePath)
         {
             using (var r = new StreamReader(filePath))

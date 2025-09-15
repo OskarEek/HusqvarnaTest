@@ -14,7 +14,7 @@ namespace HusqvarnaTest.Services
                     string json = r.ReadToEnd();
                     return JsonSerializer.Deserialize<T>(json);
                 }
-                catch (JsonException e)
+                catch (JsonException)
                 {
                     return default;
                 }

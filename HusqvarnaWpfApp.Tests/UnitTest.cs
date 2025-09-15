@@ -6,27 +6,38 @@ namespace Tests
     {
         private static string _filePath = "test.json";
 
+        //TODO: The way I know I could make the test faster is by making the "FileHasChanged" method in the MonitorFileService an internal method and then exposing internals to the test project. By doing it this way
+        //I could test the actual logic for checking if a file has changed or not without having to care about wating for the FileChanged event to trigger. But my understanding from the assignment PDF was that this wasnt the
+        //expected way to solve this.
         [Fact]
-        //TODO: Sometimes (not always) the test takes a little longer to run the first time I run it, if I run it a second time (and all times after that) its much faster and Im not sure why that is or how to solve it
-        public void MonitorFileServiceTest()
+        public async Task MonitorFileServiceTest()
         {
             //Create new empty test file
             if (File.Exists(_filePath))
             {
                 File.Delete(_filePath);
             }
-            File.WriteAllText(_filePath, string.Empty);
+            await File.WriteAllTextAsync(_filePath, string.Empty);
 
-            var monitorFileService = new MonitorFileService(_filePath);
+            var monitorFileService = new MonitorFileService(_filePath, TimeSpan.FromMilliseconds(1));
 
-            //File has not changed
-            (bool fileHasChanged, DateTime writeTime) = monitorFileService.FileHasChanged();
-            Assert.False(fileHasChanged);
+            var monitoredChange = false;
+            monitorFileService.FileChanged += (s, e) =>
+            {
+                monitoredChange = true;
+            };
 
-            //File has changed
-            File.WriteAllText(_filePath, "null");
-            (fileHasChanged, writeTime) = monitorFileService.FileHasChanged();
-            Assert.True(fileHasChanged);
+            //Expect no monitored change
+            await Task.Delay(2);
+            Assert.False(monitoredChange);
+
+            await File.WriteAllTextAsync(_filePath, "null");
+
+            //Expect monitored change
+            await Task.Delay(2);
+            Assert.True(monitoredChange);
+
+            monitorFileService.Dispose();
 
             File.Delete(_filePath);
         }

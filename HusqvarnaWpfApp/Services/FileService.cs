@@ -7,17 +7,21 @@ namespace HusqvarnaTest.Services
     {
         public T? GetJsonFileData<T>(string filePath)
         {
-            using (var r = new StreamReader(filePath))
+            try
             {
-                try
+                using (var r = new StreamReader(filePath))
                 {
                     string json = r.ReadToEnd();
                     return JsonSerializer.Deserialize<T>(json);
                 }
-                catch (JsonException)
-                {
-                    return default;
-                }
+            }
+            catch (JsonException)
+            {
+                return default;
+            }
+            catch (FileNotFoundException)
+            {
+                return default;
             }
         }
     }

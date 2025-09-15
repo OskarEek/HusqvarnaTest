@@ -20,7 +20,7 @@
         <ListBox Grid.Column="1"  ItemsSource="{Binding Companies}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
+                    <StackPanel Margin="0,5,0,0">
                         <TextBlock>
                             <Run Text="Name: "/>
                             <Run Text="{Binding Name}"/>

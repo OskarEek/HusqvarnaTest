@@ -10,19 +10,19 @@ namespace HusqvarnaTest;
 /// </summary>
 public partial class App : Application
 {
-    private static string _filePath = "data.json";
+    private static readonly string s_filePath = "data.json";
     private IMonitorFileService? _monitorFileService;
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
         //TODO: I would rather solve this using dependency injection but unfortunately I did not have time try that this time
-        _monitorFileService = new MonitorFileService(_filePath);
+        _monitorFileService = new MonitorFileService(s_filePath);
         var fileService = new FileService();
 
         var window = new Views.MainWindow()
         {
-            DataContext = new ViewModels.MainViewModel(_filePath, _monitorFileService, fileService)
+            DataContext = new ViewModels.MainViewModel(s_filePath, _monitorFileService, fileService)
         };
         window.Show();
     }
